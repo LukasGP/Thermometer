@@ -8,6 +8,9 @@ namespace ThermometerNS
 {
     public class ThermometerProperties
     {
-        public List<Threshold> Thresholds;
+        public List<Threshold> Thresholds = new List<Threshold>();
+        //TODO: Utilize these properties
+        public bool DisplayInCelsius;
+        public bool InputIsCelsius;
     }
 }

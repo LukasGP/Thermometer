@@ -69,7 +69,7 @@ namespace ThermometerNS
                 // Attempt to read the temperature and get back the result in the desired units. Display the result in a text box.                
                 thermometer.RegisterTemperatureChange(SH_Temperature.Value, CB_MeasurementUnits.SelectedItem.ToString(), CB_DisplayUnits.SelectedItem.ToString());
                 // Determine if the temperature is rising or falling. Not very interested in whether it has no change.
-                TB_TemperatureDisplay.Text = thermometer.currentTemperature.ToString();
+                TB_TemperatureDisplay.Text = thermometer._currentTemperature.ToString();
                 thermometer.HasThresholdBeenReached();
             }
             catch (Exception conversionException)

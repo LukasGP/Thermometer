@@ -8,68 +8,65 @@ namespace ThermometerNS
 {
     public class Thermometer
     {
-        public ThermometerProperties thermometerProperties = new ThermometerProperties();
-        private double previousTemperature;
-        public double currentTemperature;
-        public bool hasBoiledFlag = false;
-        public bool hasfrozenFlag = false;
-        public List<double> HistoricalTemperatures;
-
+        private double _previousTemperature;
+        public double _currentTemperature;
+        public ThermometerProperties _thermometerProperties = new ThermometerProperties();
+        public List<double> _historicalTemperatures = new List<double>();
 
 
         // Set the thermometer's optional thresholds property
         public void CreateThermometerThreshold(string thresholdName, double thresholdValue, double temperatureTolerance, bool sensativeToRisingEdge, bool sensativeToFallingEdge)
         {
-            var threshold = new Threshold(thresholdName, thresholdValue, temperatureTolerance, sensativeToRisingEdge, sensativeToFallingEdge);
+            _thermometerProperties.Thresholds.Add(new Threshold(thresholdName, thresholdValue, temperatureTolerance, sensativeToRisingEdge, sensativeToFallingEdge));
         }
 
 
         // Capture the current temperature reading for future referral.
         public void StoreCurrentTemperature()
         {
-            previousTemperature = currentTemperature;
+            _previousTemperature = _currentTemperature;
         }
 
         // Take a temperature reading and conduct any necessary unit conversions.
         public void RegisterTemperatureChange(double temperatureReading, string measurementUnits, string displayUnits)
         {
             StoreCurrentTemperature();
-            HistoricalTemperatures.Add(ConvertUnits(temperatureReading, measurementUnits, displayUnits));
+            _historicalTemperatures.Add(ConvertUnits(temperatureReading, measurementUnits, displayUnits));
+        }
+
+        public double GetLastTemperatureReading()
+        {
+            return _historicalTemperatures.Last();
         }
 
         private double ConvertUnits(double temperatureReading, string measurementUnits, string displayUnits)
         {
             // TODO: change to establish measured units from dropdown on UI. Also establish display units from seperate dropdown
+            // Instead of passing around a string have the units as a property.
             if (measurementUnits == "Celsius" && displayUnits == "Fahrenheit")
             {
                 // Convert Celsius to Fahrenheight
-                currentTemperature = Math.Round((temperatureReading * 1.8) + 32, 2);
-                return currentTemperature;
+                _currentTemperature = Math.Round((temperatureReading * 1.8) + 32, 2);
+                return _currentTemperature;
             }
             else if (measurementUnits == "Fahrenheit" && displayUnits == "Celsius")
             {
                 // Convert Fahrenheight to Celsius
-                currentTemperature = Math.Round((temperatureReading - 32) * 0.5556, 2);
-                return currentTemperature;
+                _currentTemperature = Math.Round((temperatureReading - 32) * 0.5556, 2);
+                return _currentTemperature;
             }
             else if ((measurementUnits == "Celsius" && displayUnits == "Celsius") || (measurementUnits == "Fahrenheit" && displayUnits == "Fahrenheit"))
             {
-                currentTemperature = Math.Round(temperatureReading, 2);
-                return currentTemperature;
+                _currentTemperature = Math.Round(temperatureReading, 2);
+                return _currentTemperature;
             }
             // There's been an issue with establishing the measured units & display units and converting the read temperature. Return Nan.
             throw new System.InvalidCastException();
         }
-        
-        // Establish whether or not the temperature is dropping. Note: should be called before checking if any new thresholds have been reached or released.
-        public bool IsTemperatureFalling()
-        {
-            return ((currentTemperature - previousTemperature) < 0);
-        }
 
         public bool HasThresholdBeenReached()
         {
-            foreach (var threshold in thermometerProperties.Thresholds)
+            foreach (var threshold in _thermometerProperties.Thresholds)
             {
                 if (threshold.IsReached == true)
                 {
@@ -77,14 +74,14 @@ namespace ThermometerNS
                 }
 
                 // Check for rising edge thresholds
-                if (currentTemperature >= threshold.ThresholdValue && previousTemperature < threshold.ThresholdValue && threshold.SensativeToRisingEdge)
+                if (_currentTemperature >= threshold.ThresholdValue && _previousTemperature < threshold.ThresholdValue && threshold.SensativeToRisingEdge)
                 {
                     threshold.IsReached = true;
                     return true;
                 }
 
                 // Check for falling edge thresholds
-                else if (currentTemperature <= threshold.ThresholdValue && previousTemperature > threshold.ThresholdValue && threshold.SensativeToFallingEdge)
+                else if (_currentTemperature <= threshold.ThresholdValue && _previousTemperature > threshold.ThresholdValue && threshold.SensativeToFallingEdge)
                 {
                     threshold.IsReached = true;
                     return true;
@@ -97,12 +94,12 @@ namespace ThermometerNS
         {
             // Case 1: rising edge threshold still above threshold
             // Case 2: falling edge thresh
-            if (threshold.SensativeToRisingEdge && currentTemperature < threshold.TempTolerance.LowerBand)
+            if (threshold.SensativeToRisingEdge && _currentTemperature < threshold.TempTolerance.LowerBand)
             {
                 threshold.IsReached = false;
                 return false;
             }
-            if (threshold.SensativeToFallingEdge && currentTemperature > threshold.TempTolerance.UpperBand)
+            if (threshold.SensativeToFallingEdge && _currentTemperature > threshold.TempTolerance.UpperBand)
             {
                 threshold.IsReached = false;
                 return false;

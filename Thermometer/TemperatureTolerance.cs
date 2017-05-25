@@ -15,8 +15,16 @@ namespace ThermometerNS
         public TemperatureTolerance(double tempTolerance, double thresholdTemperature)
         {
             ToleranceValue = tempTolerance;
-            UpperBand = thresholdTemperature + (thresholdTemperature * ToleranceValue);
-            LowerBand = thresholdTemperature - (thresholdTemperature - ToleranceValue);
+            if (thresholdTemperature != 0)
+            {
+                UpperBand = thresholdTemperature + (thresholdTemperature * ToleranceValue);
+                LowerBand = thresholdTemperature - (thresholdTemperature * ToleranceValue);
+            }
+            else
+            {
+                UpperBand = ToleranceValue;
+                LowerBand = -1 * ToleranceValue;
+            }
         }
     }
 }
