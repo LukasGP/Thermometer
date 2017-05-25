@@ -1,0 +1,32 @@
+﻿<Window x:Class="ThermometerNS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThermometerNS"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="704.74" Width="916.813">
+    <Grid Margin="0,0,-188,-226">
+        <ComboBox x:Name="CB_MeasurementUnits" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="152" SelectionChanged="CB_measurementUnits_SelectionChanged"/>
+        <TextBox x:Name="TB_SliderValue" HorizontalAlignment="Left" Height="23" Margin="213,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" IsReadOnly="True"/>
+        <Slider x:Name="SH_Temperature" HorizontalAlignment="Left" Margin="-14,264,0,0" VerticalAlignment="Top" Width="400" Maximum="1000" Minimum="-467" SmallChange="0.2" LargeChange="2" ValueChanged="SH_temperature_ValueChanged" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90.197"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <ComboBox x:Name="CB_DisplayUnits" HorizontalAlignment="Left" Margin="355,10,0,0" VerticalAlignment="Top" Width="152"/>
+        <Label x:Name="label_Copy1" Content="Temperature:" HorizontalAlignment="Left" Margin="355,42,0,0" VerticalAlignment="Top" Width="83" RenderTransformOrigin="3.71,0.58"/>
+        <TextBox x:Name="TB_TemperatureDisplay" HorizontalAlignment="Left" Height="23" Margin="444,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="46"/>
+        <TextBox x:Name="TB_Tolerance" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="13,365,0,0"/>
+        <Label x:Name="label_Copy2" Content="Tolerance&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,335,0,0" Width="120" Height="27"/>
+        <Button x:Name="BT_NewThreshold" Content="New Threshold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="117" Margin="10,217,0,0" Height="32" Click="BT_NewThreshold_Click"/>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="149" VerticalAlignment="Top" Width="152" Margin="10,46,0,0"/>
+        <Button x:Name="BT_DeleteThreshold" Content="Delete Threshold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="117" Margin="10,254,0,0" Height="30" Click="button_Click"/>
+
+    </Grid>
+</Window>
