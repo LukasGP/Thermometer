@@ -8,197 +8,137 @@ namespace ThermometerNS
 {
     public class Thermometer
     {
+        private string _celsius = "Celsius";
+        private string _fahrenheit = "Fahrenheit";
         private double _previousTemperature;
+        private double _normalizedTemperature;
         public double _currentTemperature;
         public ThermometerProperties _thermometerProperties = new ThermometerProperties();
         public List<double> _historicalTemperatures = new List<double>();
-
+        public List<Threshold> _newlyReachedThresholds = new List<Threshold>();
 
         // Set the thermometer's optional thresholds property
         public void CreateThermometerThreshold(string thresholdName, double thresholdValue, double temperatureTolerance, bool sensativeToRisingEdge, bool sensativeToFallingEdge)
         {
+            double thresholdValueFahrenheit = ConvertUnits(thresholdValue, _celsius, _fahrenheit);
             _thermometerProperties.Thresholds.Add(new Threshold(thresholdName, thresholdValue, temperatureTolerance, sensativeToRisingEdge, sensativeToFallingEdge));
         }
 
-
         // Capture the current temperature reading for future referral.
-        public void StoreCurrentTemperature()
+        public void StorePreviousTemperature()
         {
-            _previousTemperature = _currentTemperature;
+            _previousTemperature = _normalizedTemperature;
         }
 
         // Take a temperature reading and conduct any necessary unit conversions.
         public void RegisterTemperatureChange(double temperatureReading, string measurementUnits, string displayUnits)
         {
-            StoreCurrentTemperature();
-            _historicalTemperatures.Add(ConvertUnits(temperatureReading, measurementUnits, displayUnits));
+            _newlyReachedThresholds.Clear();
+            // If the input units have changed update the operating units of the thermometer.
+            UpdateThermometerUnits(measurementUnits, displayUnits);
+            StorePreviousTemperature();
+            // Normalize the input temperature reading to celsius.
+            _normalizedTemperature = ConvertUnits(temperatureReading, measurementUnits, _celsius);
+            // Establish a list of all newly reached thresholds.
+            _newlyReachedThresholds = NewlyReachedThresholds();
+            // Check if previously reached thresholds are still reached.
+            CheckIfThresholdsAreStillReached();
+            // Set the final output temperature that's ready for display.
+            _currentTemperature = ConvertUnits(_normalizedTemperature, _celsius, displayUnits);
         }
 
-        public double GetLastTemperatureReading()
+        public void UpdateThermometerUnits(string measurementUnits, string displayUnits)
         {
-            return _historicalTemperatures.Last();
+            _thermometerProperties.InputIsCelsius = measurementUnits.Equals(_celsius);
+            _thermometerProperties.DisplayInCelsius = displayUnits.Equals(_celsius);
         }
 
-        private double ConvertUnits(double temperatureReading, string measurementUnits, string displayUnits)
+        public void SetupDefaultThresholds()
         {
-            // TODO: change to establish measured units from dropdown on UI. Also establish display units from seperate dropdown
+            CreateThermometerThreshold("Boiling", 100, 0.1, true, false);
+            CreateThermometerThreshold("Freezing", 0, 1, false, true);
+            CreateThermometerThreshold("Hot Out", 45, 0.1, true, true);
+        }
+
+        public double ConvertUnits(double temperatureReading, string measurementUnits, string displayUnits)
+        {
+            // If there has been a null input for measurement units or display units return the passed temperature.
+            if (measurementUnits == "" || displayUnits == "")
+            {
+                return temperatureReading;
+            }
             // Instead of passing around a string have the units as a property.
-            if (measurementUnits == "Celsius" && displayUnits == "Fahrenheit")
+            if (measurementUnits == _celsius && displayUnits == _fahrenheit)
             {
                 // Convert Celsius to Fahrenheight
-                _currentTemperature = Math.Round((temperatureReading * 1.8) + 32, 2);
-                return _currentTemperature;
+                return Math.Round((temperatureReading * 1.8) + 32, 2);
+                
             }
-            else if (measurementUnits == "Fahrenheit" && displayUnits == "Celsius")
+            else if (measurementUnits == _fahrenheit && displayUnits == _celsius)
             {
                 // Convert Fahrenheight to Celsius
-                _currentTemperature = Math.Round((temperatureReading - 32) * 0.5556, 2);
-                return _currentTemperature;
+                return Math.Round((temperatureReading - 32) * 0.5556, 2);
             }
-            else if ((measurementUnits == "Celsius" && displayUnits == "Celsius") || (measurementUnits == "Fahrenheit" && displayUnits == "Fahrenheit"))
+            else if ((measurementUnits == _celsius && displayUnits == _celsius) || (measurementUnits == _fahrenheit && displayUnits == _fahrenheit))
             {
-                _currentTemperature = Math.Round(temperatureReading, 2);
-                return _currentTemperature;
+                return Math.Round(temperatureReading, 2);
             }
             // There's been an issue with establishing the measured units & display units and converting the read temperature. Return Nan.
             throw new System.InvalidCastException();
         }
 
-        public bool HasThresholdBeenReached()
+        public List<Threshold> NewlyReachedThresholds()
+        {
+            var newlyReachedThresholds = new List<Threshold>();
+            foreach (var threshold in _thermometerProperties.Thresholds)
+            {
+                if (threshold.IsReached == false)
+                {
+                    // Check for rising edge thresholds
+                    if (_normalizedTemperature >= threshold.ThresholdValueCelsius && _previousTemperature < threshold.ThresholdValueCelsius && threshold.SensitiveToRisingEdge)
+                    {
+                        threshold.IsReached = true;
+                        newlyReachedThresholds.Add(threshold);
+                    }
+
+                    // Check for falling edge thresholds
+                    else if (_normalizedTemperature <= threshold.ThresholdValueCelsius && _previousTemperature > threshold.ThresholdValueCelsius && threshold.SensitiveToFallingEdge)
+                    {
+                        threshold.IsReached = true;
+                        newlyReachedThresholds.Add(threshold);
+                    }
+                }
+            }
+            return newlyReachedThresholds;
+        }
+
+        public void CheckIfThresholdsAreStillReached()
         {
             foreach (var threshold in _thermometerProperties.Thresholds)
             {
                 if (threshold.IsReached == true)
                 {
-                    return true;
-                }
-
-                // Check for rising edge thresholds
-                if (_currentTemperature >= threshold.ThresholdValue && _previousTemperature < threshold.ThresholdValue && threshold.SensativeToRisingEdge)
-                {
-                    threshold.IsReached = true;
-                    return true;
-                }
-
-                // Check for falling edge thresholds
-                else if (_currentTemperature <= threshold.ThresholdValue && _previousTemperature > threshold.ThresholdValue && threshold.SensativeToFallingEdge)
-                {
-                    threshold.IsReached = true;
-                    return true;
+                    IsThresholdStillReached(threshold);
                 }
             }
-            return false;
         }
 
         public bool IsThresholdStillReached(Threshold threshold)
         {
             // Case 1: rising edge threshold still above threshold
             // Case 2: falling edge thresh
-            if (threshold.SensativeToRisingEdge && _currentTemperature < threshold.TempTolerance.LowerBand)
+            if (threshold.SensitiveToRisingEdge && _normalizedTemperature < threshold.TempTolerance.LowerBand)
             {
                 threshold.IsReached = false;
                 return false;
             }
-            if (threshold.SensativeToFallingEdge && _currentTemperature > threshold.TempTolerance.UpperBand)
+            if (threshold.SensitiveToFallingEdge && _normalizedTemperature > threshold.TempTolerance.UpperBand)
             {
                 threshold.IsReached = false;
                 return false;
             }
+            threshold.IsReached = true;
             return true;
         }
-
-
-        /*
-        public void CheckIfThresholdReached()
-        {
-                var tempDeltaDirection = IsTemperatureFalling();
-                // If the thermometer hasn't already boiled check if it's boiling.
-                if (!hasBoiledFlag)
-                {
-                    if (IsBoiling())
-                    {
-                        //MessageBox.Show("Boiling!");
-                    }
-                }
-                // If the thermometer has boiled check to see if it's fallen outside of the boiling threshold with tolerance.
-                else
-                {
-                    IsStillBoiling();
-                }
-                if (!hasfrozenFlag)
-                {
-                    if (IsFreezing())
-                    {
-                        //MessageBox.Show("Frozen!");
-                    }
-                }
-                else
-                {
-                    IsStillFreezing();
-                }
-            }
-
-
-
-
-
-        // Check if boiling threshold has been reached.
-        public bool IsBoiling()
-        {
-            if (currentTemperature >= thermometerProperties.BoilingThreshold)
-            {
-                // Flag that boiling threshold has been reached.
-                hasBoiledFlag = true;
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsStillBoiling()
-        {
-            // TODO: may need additional checks for negative numbers?
-            var tempTolerance = thermometerProperties.BoilingThreshold - (thermometerProperties.TemperatureTolerance * thermometerProperties.BoilingThreshold);
-            // If the temperature has dropped outside of the boiling range set the has boiled flag to false and return false;
-            if (currentTemperature < tempTolerance)
-            {
-                // Drop the has boiled flag.
-                hasBoiledFlag = false;
-                return false;
-            }
-            return true;
-        }
-
-        public bool IsFreezing()
-        {
-            // Flag that freezing threshold has been reached.
-            if (currentTemperature <= thermometerProperties.FreezingThreshold)
-            {
-                hasfrozenFlag = true;
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsStillFreezing()
-        {
-            // TODO: may need additional checks for negative numbers?
-            double tempTolerance;
-            if (thermometerProperties.FreezingThreshold != 0)
-            {
-                tempTolerance = (thermometerProperties.TemperatureTolerance * thermometerProperties.FreezingThreshold) + thermometerProperties.FreezingThreshold;
-            }
-            else
-            {
-                tempTolerance = thermometerProperties.TemperatureTolerance;
-            }
-            // If the temperature has dropped outside of the boiling range set the has boiled flag to false and return false;
-            if (currentTemperature > tempTolerance)
-            {
-                // Drop the has frozen flag.
-                hasfrozenFlag = false;
-                return false;
-            }
-            return true;
-        }*/
     }
 }

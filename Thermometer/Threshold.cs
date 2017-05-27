@@ -9,18 +9,18 @@ namespace ThermometerNS
     public class Threshold
     {
         public string ThresholdName;
-        public double ThresholdValue;
-        public bool SensativeToRisingEdge;
-        public bool SensativeToFallingEdge;
-        public bool IsReached;
+        public double ThresholdValueCelsius;
+        public bool SensitiveToRisingEdge;
+        public bool SensitiveToFallingEdge;
+        public bool IsReached = false;
         public TemperatureTolerance TempTolerance;
 
-        public Threshold(string thresholdName, double thresholdValue, double temperatureTolerance, bool sensativeToRisingEdge, bool sensativeToFallingEdge)
+        public Threshold(string thresholdName, double thresholdValue, double temperatureTolerance, bool sensitiveToRisingEdge, bool sensitiveToFallingEdge)
         {
             ThresholdName = thresholdName;
-            ThresholdValue = thresholdValue;
-            SensativeToRisingEdge = sensativeToRisingEdge;
-            SensativeToFallingEdge = sensativeToFallingEdge;
+            ThresholdValueCelsius = thresholdValue;
+            SensitiveToRisingEdge = sensitiveToRisingEdge;
+            SensitiveToFallingEdge = sensitiveToFallingEdge;
             TempTolerance = new TemperatureTolerance(temperatureTolerance, thresholdValue);
         }
     }

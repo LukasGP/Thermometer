@@ -29,9 +29,9 @@ namespace ThermometerTestNS
             foreach (var temp in testTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.RegisterTemperatureChange(temp,measuredUnits,displayUnits);
+                thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
+                readTemps.Add(thermometer._currentTemperature);
             }
-            readTemps = thermometer._historicalTemperatures;
 
             //ASSERT
             CollectionAssert.AreEqual(testTemps, readTemps);
@@ -57,8 +57,8 @@ namespace ThermometerTestNS
             {
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
+                readTemps.Add(thermometer._currentTemperature);
             }
-            readTemps = thermometer._historicalTemperatures;
 
             //ASSERT
             CollectionAssert.AreEqual(testTemps, readTemps);
@@ -86,8 +86,8 @@ namespace ThermometerTestNS
             {
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
+                readTemps.Add(thermometer._currentTemperature);
             }
-            readTemps = thermometer._historicalTemperatures;
 
             //ASSERT
             CollectionAssert.AreEqual(testFahrenheitTemps, readTemps);
@@ -115,8 +115,8 @@ namespace ThermometerTestNS
             {
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
+                readTemps.Add(thermometer._currentTemperature);
             }
-            readTemps = thermometer._historicalTemperatures;
 
             //ASSERT
             CollectionAssert.AreEqual(testCelsiusTemps, readTemps);

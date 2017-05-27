@@ -16,7 +16,7 @@ namespace ThermometerTestNS
         {
             //SETUP
             bool expectedIsBoiling = false;
-            bool readIsBoiling = true;
+            bool readIsBoiling = false;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
@@ -32,9 +32,14 @@ namespace ThermometerTestNS
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.StoreCurrentTemperature();
+                thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                readIsBoiling = thermometer.HasThresholdBeenReached();
+                thermometer.NewlyReachedThresholds();
+                
+            }
+            foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+            {
+                readIsBoiling = threshold.IsReached.Equals(true) && threshold.ThresholdName.Equals("Boiling");
             }
 
             //ASSERT
@@ -63,7 +68,14 @@ namespace ThermometerTestNS
             {
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                readIsBoiling = thermometer.HasThresholdBeenReached();
+                thermometer.NewlyReachedThresholds();
+                foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+                {
+                    if (threshold.IsReached == true)
+                    {
+                        readIsBoiling = threshold.ThresholdName.Equals("Boiling");
+                    }
+                }
             }
 
             //ASSERT
@@ -91,9 +103,13 @@ namespace ThermometerTestNS
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.StoreCurrentTemperature();
+                thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                readIsFreezing = thermometer.HasThresholdBeenReached();
+                thermometer.NewlyReachedThresholds();
+            }
+            foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+            {
+                readIsFreezing = threshold.IsReached.Equals(true) && threshold.ThresholdName.Equals("Freezing");
             }
 
             //ASSERT
@@ -121,9 +137,16 @@ namespace ThermometerTestNS
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.StoreCurrentTemperature();
+                thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                readIsFreezing = thermometer.HasThresholdBeenReached();
+                thermometer.NewlyReachedThresholds();
+                foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+                {
+                    if (threshold.IsReached == true)
+                    {
+                        readIsFreezing = threshold.ThresholdName.Equals("Freezing");
+                    }
+                }
             }
 
             //ASSERT
@@ -139,7 +162,7 @@ namespace ThermometerTestNS
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            TestResources.SetupGenericTestThermometer(thermometer);
+            thermometer.CreateThermometerThreshold("Freezing", 0, 0, false, true);
 
             // Establish test data to mimic external temperature readings.
             var testCelsiusTemps = new List<double>() { 0.1, -0.2, -0.1, 0, 0.11 };
@@ -179,7 +202,7 @@ namespace ThermometerTestNS
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.StoreCurrentTemperature();
+                thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
                 testStillFreezing = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
@@ -198,7 +221,7 @@ namespace ThermometerTestNS
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            TestResources.SetupGenericTestThermometer(thermometer);
+            thermometer.CreateThermometerThreshold("Boiling", 100, 0, true, false);
 
             // Establish test data to mimic external temperature readings.
             var testCelsiusTemps = new List<double>() { 98, 101, 98 };
@@ -210,7 +233,7 @@ namespace ThermometerTestNS
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
-                thermometer.StoreCurrentTemperature();
+                thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
                 testStillBoiling = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
