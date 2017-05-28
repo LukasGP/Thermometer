@@ -1,0 +1,15 @@
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\ThermometerTest.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\ThermometerTest.pdb
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Thermometer.exe
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Thermometer.pdb
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Thermometer.exe.config
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\obj\Debug\ThermometerTest.csprojResolveAssemblyReference.cache
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\obj\Debug\ThermometerTest.dll
+c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\ThermometerTest\obj\Debug\ThermometerTest.pdb
