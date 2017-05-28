@@ -24,3 +24,8 @@ To establish thresholds call the CreateThermometerThreshold(string thresholdName
 
 If a change in temperature results in a threshold being reached that threshold can be found in 
 the List<Threshold> NewlyReachedThresholds object in the Thermometer class.
+
+Example:
+If you would like to see a working UI that's been added onto the Thermometer class please see the "Published" folder.
+The setup inside published should install a working copy of the Thermometer. Note: You will likely need to be on
+windows or using an emulator to install these files.
