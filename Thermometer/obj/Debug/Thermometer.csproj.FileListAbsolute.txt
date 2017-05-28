@@ -14,7 +14,3 @@ c:\users\lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermo
 C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\obj\Debug\Thermometer.csprojResolveAssemblyReference.cache
 C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\obj\Debug\NewThreshold.g.cs
 C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\obj\Debug\NewThreshold.baml
-C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\bin\Debug\Thermometer.exe.manifest
-C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\bin\Debug\Thermometer.application
-C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\obj\Debug\Thermometer.exe.manifest
-C:\Users\Lukas\onedrive\documents\visual studio 2017\Projects\Thermometer\Thermometer\obj\Debug\Thermometer.application
