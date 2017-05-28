@@ -9,62 +9,56 @@ namespace ThermometerTestNS
     public class TestTolerances
     {
         [TestMethod]
-        /* Test that the boiling threshold property of the thermometer has been properly set.*/
+        // Test that the boiling threshold has been properly set.
         public void TestEstablishingTempTolerance()
         {
             //SETUP
-            double expectedTolerance = 0;
-            double testTolerance;
+            const double expectedTolerance = 0;
             var thermometer = new Thermometer();
-            var boilingThreshold = new Threshold("Boiling", 100, expectedTolerance, true, false);
 
             //EXECUTE
             thermometer.CreateThermometerThreshold("NotBoiling", 99, 0.1, false, true);
             thermometer.CreateThermometerThreshold("Boiling", 100, expectedTolerance, true, false);
-            testTolerance = thermometer._thermometerProperties.Thresholds.Where(x => x.ThresholdName == "Boiling").First().TempTolerance.ToleranceValue;
+            var testTolerance = thermometer.ThermometerProperties.Thresholds.First(x => x.ThresholdName == "Boiling").TempTolerance.ToleranceValue;
 
             //ASSERT
             Assert.AreEqual(expectedTolerance, testTolerance);
         }
 
         [TestMethod]
-        /* Test that the boiling threshold property of the thermometer has been properly set.*/
+        // Test that the upper band of the boiling threshold has been properly set.
         public void TestEstablishingToleranceUpperBand()
         {
             //SETUP
-            double expectedTolerance = 0.1;
-            double expectedToleranceUpperBand = 110;
-            double testToleranceUpperBand;
+            const double expectedTolerance = 0.1;
+            const double expectedToleranceUpperBand = 110;
             var thermometer = new Thermometer();
-            var boilingThreshold = new Threshold("Boiling", 100, expectedTolerance, true, false);
 
             //EXECUTE
             thermometer.CreateThermometerThreshold("NotBoiling", 99, 0, false, true);
             thermometer.CreateThermometerThreshold("Boiling", 100, expectedTolerance, true, false);
-            testToleranceUpperBand = thermometer._thermometerProperties.Thresholds.Where(x => x.ThresholdName == "Boiling").First().TempTolerance.UpperBand;
+            var testToleranceUpperBand = thermometer.ThermometerProperties.Thresholds.First(x => x.ThresholdName == "Boiling").TempTolerance.UpperBand;
 
             //ASSERT
             Assert.AreEqual(expectedToleranceUpperBand, testToleranceUpperBand);
         }
 
         [TestMethod]
-        /* Test that the boiling threshold property of the thermometer has been properly set.*/
+        // Test that the lower band of the boiling threshold has been properly set.
         public void TestEstablishingToleranceLowerBand()
         {
             //SETUP
-            double expectedTolerance = 0.1;
-            double expectedToleranceUpperBand = 90;
-            double testToleranceUpperBand;
+            const double expectedTolerance = 0.1;
+            const double expectedToleranceLowerBand = 90;
             var thermometer = new Thermometer();
-            var boilingThreshold = new Threshold("Boiling", 100, expectedTolerance, true, false);
 
             //EXECUTE
             thermometer.CreateThermometerThreshold("NotBoiling", 99, 0, false, true);
             thermometer.CreateThermometerThreshold("Boiling", 100, expectedTolerance, true, false);
-            testToleranceUpperBand = thermometer._thermometerProperties.Thresholds.Where(x => x.ThresholdName == "Boiling").First().TempTolerance.LowerBand;
+            var testToleranceUpperBand = thermometer.ThermometerProperties.Thresholds.First(x => x.ThresholdName == "Boiling").TempTolerance.LowerBand;
 
             //ASSERT
-            Assert.AreEqual(expectedToleranceUpperBand, testToleranceUpperBand);
+            Assert.AreEqual(expectedToleranceLowerBand, testToleranceUpperBand);
         }
     }
 }

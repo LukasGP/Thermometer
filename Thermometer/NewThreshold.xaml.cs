@@ -19,22 +19,37 @@ namespace ThermometerNS
     /// </summary>
     public partial class NewThreshold : Window
     {
-        Thermometer _currentThermometer;
+        private readonly Thermometer CurrentThermometer;
+        /// <summary>
+        /// A new instance of the form for creating a new threshold.
+        /// </summary>
+        /// <param name="currentThermometer">The current thermometer instance.</param>
         public NewThreshold(Thermometer currentThermometer)
         {
-            // Note, that the textboxes are not limited to what their input can be. This is purely for demonstration purposes and should not be deployed.
+            // Note, that the textboxes are not limited to what their input can be. 
+            // This is purely for demonstration purposes and should not be deployed.
             InitializeComponent();
-            _currentThermometer = currentThermometer;
+            CurrentThermometer = currentThermometer;
         }
 
+        /// <summary>
+        /// Create a threshold with all of the specified values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BT_Submit_Click(object sender, RoutedEventArgs e)
         {
-            string thresholdName = TB_ThresholdName.Text;
-            double thresholdValue = Convert.ToDouble(TB_ThresholdValue.Text);
-            double thresholdTolerance = Convert.ToDouble(TB_ThresholdTolerance.Text);
-            bool risingEdgeSensitive = (bool)CB_ThresholdRisingEdgeSensitive.IsChecked;
-            bool fallingEdgeSensitive = (bool)CB_ThresholdFallingEdgeSensitive.IsChecked;
-            _currentThermometer.CreateThermometerThreshold(thresholdName, thresholdValue, thresholdTolerance, risingEdgeSensitive, fallingEdgeSensitive);
+            var thresholdName = TB_ThresholdName.Text;
+            var thresholdValue = Convert.ToDouble(TB_ThresholdValue.Text);
+            var thresholdTolerance = Convert.ToDouble(TB_ThresholdTolerance.Text);
+            var risingEdgeSensitive = CB_ThresholdRisingEdgeSensitive.IsChecked != null && 
+                (bool)CB_ThresholdRisingEdgeSensitive.IsChecked;
+            var fallingEdgeSensitive = CB_ThresholdFallingEdgeSensitive.IsChecked != null && 
+                (bool)CB_ThresholdFallingEdgeSensitive.IsChecked;
+            CurrentThermometer.CreateThermometerThreshold(thresholdName, thresholdValue, 
+                thresholdTolerance, risingEdgeSensitive, fallingEdgeSensitive);
+            var homePage = this.Owner as MainWindow;
+            homePage?.RefreshThresholdsDisplay();
             Close();
         }
     }
