@@ -16,7 +16,7 @@ namespace ThermometerNS
         public List<Threshold> NewlyReachedThresholds = new List<Threshold>();
 
         /// <summary>
-        /// Set the thermometer's optional thresholds property
+        /// Set the thermometer's optional thresholds property.
         /// </summary>
         /// <param name="thresholdName">The threshold's name</param>
         /// <param name="thresholdValue">The threshold's value</param>

@@ -48,7 +48,7 @@ namespace ThermometerNS
                 (bool)CB_ThresholdFallingEdgeSensitive.IsChecked;
             CurrentThermometer.CreateThermometerThreshold(thresholdName, thresholdValue, 
                 thresholdTolerance, risingEdgeSensitive, fallingEdgeSensitive);
-            var homePage = this.Owner as MainWindow;
+            var homePage = Owner as MainWindow;
             homePage?.RefreshThresholdsDisplay();
             Close();
         }
