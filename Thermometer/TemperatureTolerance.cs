@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThermometerNS
+﻿namespace ThermometerNS
 {
     public class TemperatureTolerance
     {
@@ -15,16 +9,8 @@ namespace ThermometerNS
         public TemperatureTolerance(double tempTolerance, double thresholdTemperature)
         {
             ToleranceValue = tempTolerance;
-            if (thresholdTemperature != 0)
-            {
-                UpperBand = thresholdTemperature + (thresholdTemperature * ToleranceValue);
-                LowerBand = thresholdTemperature - (thresholdTemperature * ToleranceValue);
-            }
-            else
-            {
-                UpperBand = ToleranceValue;
-                LowerBand = -1 * ToleranceValue;
-            }
+            UpperBand = thresholdTemperature + ToleranceValue;
+            LowerBand = thresholdTemperature - ToleranceValue;
         }
     }
 }

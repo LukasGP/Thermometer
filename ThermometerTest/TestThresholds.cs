@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ThermometerNS;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,24 +8,24 @@ namespace ThermometerTestNS
     [TestClass]
     public class TestThresholds
     {
-        SetupResources TestResources = new SetupResources();
+        readonly SetupResources TestResources = new SetupResources();
 
         [TestMethod]
-        public void TestCheckIfBoilingNotBoiling()
+        // Test if the 'Boiling' threshold has been reached for temperatures below its threshold.
+        public void TestCheckIfBoilingNotBoilingCelsiusCelsius()
         {
             //SETUP
-            bool expectedIsBoiling = false;
-            bool readIsBoiling = false;
+            const bool expectedIsBoiling = false;
+            var readIsBoiling = false;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             TestResources.SetupGenericTestThermometer(thermometer);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 90, 99 };
-            var readTemps = new List<double>();
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 90, 99 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -34,10 +33,10 @@ namespace ThermometerTestNS
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                thermometer.NewlyReachedThresholds();
+                thermometer.GetNewlyReachedThresholds();
                 
             }
-            foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+            foreach (var threshold in thermometer.ThermometerProperties.Thresholds)
             {
                 readIsBoiling = threshold.IsReached.Equals(true) && threshold.ThresholdName.Equals("Boiling");
             }
@@ -47,31 +46,31 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
-        public void TestCheckIfBoilingAndBoiling()
+        // Test if the 'Boiling' threshold has been reached for temperatures crossing its threshold.
+        public void TestCheckIfBoilingAndBoilingCelsiusCelsius()
         {
             //SETUP
-            bool expectedIsBoiling = true;
-            bool readIsBoiling = true;
+            const bool expectedIsBoiling = true;
+            var readIsBoiling = true;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             TestResources.SetupGenericTestThermometer(thermometer);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 90, 100 };
-            var readTemps = new List<double>();
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 90, 100 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
             {
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                thermometer.NewlyReachedThresholds();
-                foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+                thermometer.GetNewlyReachedThresholds();
+                foreach (var threshold in thermometer.ThermometerProperties.Thresholds)
                 {
-                    if (threshold.IsReached == true)
+                    if (threshold.IsReached)
                     {
                         readIsBoiling = threshold.ThresholdName.Equals("Boiling");
                     }
@@ -83,21 +82,21 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
+        // Test if the 'Freezing' threshold has been reached for temperatures above its threshold.
         public void TestCheckIfFreezingNotFreezing()
         {
             //SETUP
-            bool expectedIsFreezing = false;
-            bool readIsFreezing = true;
+            const bool expectedIsFreezing = false;
+            var readIsFreezing = true;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             TestResources.SetupGenericTestThermometer(thermometer);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 2, 1 };
-            var readTemps = new List<double>();
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 2, 1 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -105,9 +104,9 @@ namespace ThermometerTestNS
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                thermometer.NewlyReachedThresholds();
+                thermometer.GetNewlyReachedThresholds();
             }
-            foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+            foreach (var threshold in thermometer.ThermometerProperties.Thresholds)
             {
                 readIsFreezing = threshold.IsReached.Equals(true) && threshold.ThresholdName.Equals("Freezing");
             }
@@ -117,21 +116,21 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
+        // Test if the 'Freezing' threshold has been reached for temperatures crossing its threshold.
         public void TestCheckIfFreezingAndFreezing()
         {
             //SETUP
-            bool expectedIsFreezing = true;
-            bool readIsFreezing = false;
+            const bool expectedIsFreezing = true;
+            var readIsFreezing = false;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             TestResources.SetupGenericTestThermometer(thermometer);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 0.1, -0.2 };
-            var readTemps = new List<double>();
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 0.1, -0.2 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -139,10 +138,10 @@ namespace ThermometerTestNS
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
-                thermometer.NewlyReachedThresholds();
-                foreach (var threshold in thermometer._thermometerProperties.Thresholds)
+                thermometer.GetNewlyReachedThresholds();
+                foreach (var threshold in thermometer.ThermometerProperties.Thresholds)
                 {
-                    if (threshold.IsReached == true)
+                    if (threshold.IsReached)
                     {
                         readIsFreezing = threshold.ThresholdName.Equals("Freezing");
                     }
@@ -154,20 +153,22 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
+        /* Test if the previously reached 'Freezing' threshold is still reached when its temperatures have passed above its
+            upper tolerance band */
         public void TestCheckIfStillFreezingNotFreezing()
         {
             //SETUP
-            bool expectedStillFreezing = false;
-            bool testStillFreezing = true;
+            const bool expectedStillFreezing = false;
+            var testStillFreezing = true;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             thermometer.CreateThermometerThreshold("Freezing", 0, 0, false, true);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 0.1, -0.2, -0.1, 0, 0.11 };
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 0.1, -0.2, -0.1, 0, 0.11 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -175,7 +176,7 @@ namespace ThermometerTestNS
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
-                testStillFreezing = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
+                testStillFreezing = thermometer.IsThresholdStillReached(thermometer.ThermometerProperties.Thresholds.First());
             }
 
             //ASSERT
@@ -183,21 +184,23 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
+        /* Test if the previously reached 'Freezing' threshold is still reached when its temperatures haven't passed above its
+            upper tolerance band */
         public void TestFreezingHasntRaisedPastThresholdWithTolerance()
         {
             //SETUP
-            bool expectedStillFreezing = true;
-            bool testStillFreezing = false;
+            const bool expectedStillFreezing = true;
+            var testStillFreezing = false;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            thermometer.CreateThermometerThreshold("Freezing", 0, 0.1, false, true);
+            thermometer.CreateThermometerThreshold("Freezing", 0, 1, false, true);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 0.1, -0.2, -0.1, 0, 0.09 };
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
-
+            var testCelsiusTemps = new List<double> { 0.1, -0.2, -0.1, 0, 0.09 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
+            
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
             {
@@ -205,7 +208,7 @@ namespace ThermometerTestNS
                 thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
-                testStillFreezing = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
+                testStillFreezing = thermometer.IsThresholdStillReached(thermometer.ThermometerProperties.Thresholds.First());
             }
 
             //ASSERT
@@ -213,21 +216,22 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
-        public void TestBoilingHasntDroppedPastThresholdWithoutTolerance()
+        /* Test if the previously reached 'Boiling' threshold is still reached when its temperatures have passed below its
+            lower tolerance band with a tolerance of zero */
+        public void TestBoilingHasDroppedPastThresholdWithoutTolerance()
         {
             //SETUP
-            bool expectedStillBoiling = false;
-            bool testStillBoiling = true;
+            const bool expectedStillBoiling = false;
+            var testStillBoiling = true;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
             thermometer.CreateThermometerThreshold("Boiling", 100, 0, true, false);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 98, 101, 98 };
-            //TODO: remove string & put directly in method call
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 98, 101, 98 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -236,7 +240,7 @@ namespace ThermometerTestNS
                 thermometer.StorePreviousTemperature();
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
-                testStillBoiling = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
+                testStillBoiling = thermometer.IsThresholdStillReached(thermometer.ThermometerProperties.Thresholds.First());
             }
 
             //ASSERT
@@ -244,20 +248,22 @@ namespace ThermometerTestNS
         }
 
         [TestMethod]
+        /* Test if the previously reached 'Boiling' threshold is still reached when its temperatures have passed below its
+            lower tolerance band with tolerance */
         public void TestBoilingHasntDroppedPastThresholdWithTolerance()
         {
             //SETUP
-            bool expectedStillBoiling = true;
-            bool testStillBoiling = false;
+            const bool expectedStillBoiling = true;
+            var testStillBoiling = false;
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            thermometer.CreateThermometerThreshold("Boiling", 100, 0.1, true, false);
+            thermometer.CreateThermometerThreshold("Boiling", 100, 5, true, false);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double>() { 98, 101, 95 };
-            string measuredUnits = "Celsius";
-            string displayUnits = "Celsius";
+            var testCelsiusTemps = new List<double> { 98, 101, 96 };
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
 
             //EXECUTE
             foreach (var temp in testCelsiusTemps)
@@ -265,7 +271,7 @@ namespace ThermometerTestNS
                 // Read the temperature from an external source and store it in a list of doubles.
                 thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
 
-                testStillBoiling = thermometer.IsThresholdStillReached(thermometer._thermometerProperties.Thresholds.First());
+                testStillBoiling = thermometer.IsThresholdStillReached(thermometer.ThermometerProperties.Thresholds.First());
             }
 
             //ASSERT
