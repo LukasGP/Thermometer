@@ -12,6 +12,32 @@ namespace ThermometerTestNS
         readonly SetupResources TestResources = new SetupResources();
 
         [TestMethod]
+        // Test null temperature input.
+        public void TestNullTemperatureInput()
+        {
+            //SETUP
+            var thermometer = new Thermometer();
+            TestResources.SetupGenericTestThermometer(thermometer);
+
+            // Establish test data to mimic external temperature readings.
+            var testTemps = new List<double>();
+            var readTemps = new List<double>();
+            const string measuredUnits = "Celsius";
+            const string displayUnits = "Celsius";
+
+            //EXECUTE
+            foreach (var temp in testTemps)
+            {
+                // Read the temperature from an external source and store it in a list of doubles.
+                thermometer.RegisterTemperatureChange(temp, measuredUnits, displayUnits);
+                readTemps.Add(thermometer.CurrentTemperature);
+            }
+
+            //ASSERT
+            CollectionAssert.AreEqual(testTemps, readTemps);
+        }
+
+        [TestMethod]
         // Test that the temperature is being read properly with no conversion: Celsius -> Celsius.
         public void TestRegisterTemperatureChangeCelsiusToCelsius()
         {
