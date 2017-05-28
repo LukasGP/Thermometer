@@ -30,8 +30,8 @@ namespace ThermometerTestNS
         public void TestEstablishingToleranceUpperBand()
         {
             //SETUP
-            const double expectedTolerance = 0.1;
-            const double expectedToleranceUpperBand = 110;
+            const double expectedTolerance = 5;
+            const double expectedToleranceUpperBand = 105;
             var thermometer = new Thermometer();
 
             //EXECUTE
@@ -48,8 +48,8 @@ namespace ThermometerTestNS
         public void TestEstablishingToleranceLowerBand()
         {
             //SETUP
-            const double expectedTolerance = 0.1;
-            const double expectedToleranceLowerBand = 90;
+            const double expectedTolerance = 5;
+            const double expectedToleranceLowerBand = 95;
             var thermometer = new Thermometer();
 
             //EXECUTE

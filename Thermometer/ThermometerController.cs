@@ -76,9 +76,9 @@ namespace ThermometerNS
         /// </summary>
         public void SetupDefaultThresholds()
         {
-            CreateThermometerThreshold("Boiling", 100, 0.1, true, false);
+            CreateThermometerThreshold("Boiling", 100, 5, true, false);
             CreateThermometerThreshold("Freezing", 0, 1, false, true);
-            CreateThermometerThreshold("Hot Out", 45, 0.1, true, true);
+            CreateThermometerThreshold("Hot Out", 45, 10, true, true);
         }
 
         /// <summary>

@@ -194,7 +194,7 @@ namespace ThermometerTestNS
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            thermometer.CreateThermometerThreshold("Freezing", 0, 0.1, false, true);
+            thermometer.CreateThermometerThreshold("Freezing", 0, 1, false, true);
 
             // Establish test data to mimic external temperature readings.
             var testCelsiusTemps = new List<double> { 0.1, -0.2, -0.1, 0, 0.09 };
@@ -258,10 +258,10 @@ namespace ThermometerTestNS
 
             // Specify the properties of the thermometer.
             var thermometer = new Thermometer();
-            thermometer.CreateThermometerThreshold("Boiling", 100, 0.1, true, false);
+            thermometer.CreateThermometerThreshold("Boiling", 100, 5, true, false);
 
             // Establish test data to mimic external temperature readings.
-            var testCelsiusTemps = new List<double> { 98, 101, 95 };
+            var testCelsiusTemps = new List<double> { 98, 101, 96 };
             const string measuredUnits = "Celsius";
             const string displayUnits = "Celsius";
 
