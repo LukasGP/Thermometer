@@ -121,8 +121,10 @@ namespace ThermometerNS
         private void BT_NewThreshold_Click(object sender, RoutedEventArgs e)
         {
             // Update the display of thresholds
-            var newThresholdPage = new NewThreshold(_thermometer) {Owner = this};
+            var newThresholdPage = new NewThreshold(_thermometer);
+            newThresholdPage.Owner = this;
             newThresholdPage.Show();
+            // TODO: update the list of thresholds.
         }
 
         private void BT_LoadDefaultThresholds_Click(object sender, RoutedEventArgs e)
